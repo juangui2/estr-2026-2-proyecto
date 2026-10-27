@@ -16,11 +16,13 @@ su nota del proyecto es 0.0.
 
 | Nombre completo | Código | Correo institucional | Usuario de GitHub |
 |---|---|---|---|
-|  |  |  |  |
-|  |  |  |  |
-|  |  |  |  |
+| Juan Guillermo Espinosa Cordoba |9038654  | espinosajuan@javerianacali.edu.co | juangui2 |
+| Miguel Angel Lenis Perez |  |  |  |
+| Juan Jose Arenas Davila |  |  |  |
 
 **Escenario escogido:** (A inventario / B frecuencias / C turnos / D índice)
+
+Inventario
 
 - Estructura escrita desde cero:
 - Estructura de la biblioteca contra la que se compara:
