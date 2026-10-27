@@ -17,7 +17,7 @@ su nota del proyecto es 0.0.
 | Nombre completo | Código | Correo institucional | Usuario de GitHub |
 |---|---|---|---|
 | Juan Guillermo Espinosa Cordoba |9038654  | espinosajuan@javerianacali.edu.co | juangui2 |
-| Miguel Angel Lenis Perez |  |  |  |
+| Miguel Angel Lenis Perez |9040913  | mangell@javerianacali.edu.co | MiguelAngelLenis |
 | Juan Jose Arenas Davila |  |  |  |
 
 **Escenario escogido:** (A inventario / B frecuencias / C turnos / D índice)
