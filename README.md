@@ -18,7 +18,7 @@ su nota del proyecto es 0.0.
 |---|---|---|---|
 | Juan Guillermo Espinosa Cordoba |9038654  | espinosajuan@javerianacali.edu.co | juangui2 |
 | Miguel Angel Lenis Perez |9040913  | mangell@javerianacali.edu.co | MiguelAngelLenis |
-| Juan Jose Arenas Davila |  |  |  |
+| Juan Jose Arenas Davila | 9035047 | arenasjj666@javerianacali.edu.co | Arenazzz666 |
 
 **Escenario escogido:** (A inventario / B frecuencias / C turnos / D índice)
 
