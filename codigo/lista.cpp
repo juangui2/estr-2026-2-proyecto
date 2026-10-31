@@ -18,7 +18,7 @@ Nodo* Lista::buscarProducto(int codigo) const{
 
 }
 
-bool Lista::agregarProducto(int codigo, string& nombre, int cantidad){
+bool Lista::agregarProducto(int codigo, const string& nombre, int cantidad){
     bool agregado = false;
 
     if(buscarProducto(codigo) == nullptr){
@@ -104,9 +104,7 @@ void Lista::listarProductos() const{
     Nodo* actual = cabeza;
 
     while(actual != nullptr){
-        printf("%d", actual ->codigo);
-        printf("%s", actual ->nombre);
-        printf("%d", actual ->cantidad);
+        printf("%d %s %d\n", actual->codigo, actual->nombre.c_str(), actual->cantidad);
 
         actual = actual ->sig;
     }

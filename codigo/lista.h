@@ -21,7 +21,7 @@ public:
     Lista();
     ~Lista();
 
-    bool agregarProducto(int codigo, string& nombre, int cantidad);
+    bool agregarProducto(int codigo, const string& nombre, int cantidad);
     bool eliminarProducto(int codigo);
     bool consultarProducto(int codigo, string& nombre, int& cantidad) const;
     bool reponerProducto(int codigo, int cantidad);
