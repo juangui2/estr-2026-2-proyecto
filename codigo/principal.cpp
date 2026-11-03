@@ -1,4 +1,4 @@
-// Autores: Nombre1 Codigo1, Nombre2 Codigo2, Nombre3 Codigo3
+// Autores: Juan Guillermo Espinosa 9038654, Miguel Angel Lenis 9040913, Juan Jose Arenas 9035047
 // Punto de entrada del proyecto. Reemplacen este archivo por el suyo.
 #include <cstdio>
 #include <string>

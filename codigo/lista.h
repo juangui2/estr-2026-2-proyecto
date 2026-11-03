@@ -1,3 +1,5 @@
+// Autores: Juan Guillermo Espinosa 9038654, Miguel Angel Lenis 9040913, Juan Jose Arenas 9035047
+
 #ifndef LISTA_H
 #define LISTA_H
 
