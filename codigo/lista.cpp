@@ -1,7 +1,7 @@
 // Autores: Juan Guillermo Espinosa 9038654, Miguel Angel Lenis 9040913, Juan Jose Arenas 9035047
 
 #include <iostream>
-#include "Lista.h"
+#include "lista.h"
 
 
 
@@ -81,7 +81,7 @@ bool Lista::consultarProducto(int codigo, string& nombre, int& cantidad) const{
     bool existe = false;
 
     if (encontrado != nullptr){
-        bool existe = true;
+        existe = true;
         nombre = encontrado ->nombre;
         cantidad = encontrado ->cantidad;
     }
