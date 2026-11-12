@@ -1,53 +1,33 @@
-# Informe del avance
+# Informe de avance: Inventario de una tienda
 
-*(Borren los comentarios entre paréntesis al escribir.)*
+## 1. Escenario
 
-## 1. El escenario
+Vamos a manejar el inventario de una tienda. Cada artículo tiene un código numérico, un nombre de una palabra y una cantidad. El programa puede agregar un artículo (si el código no existe), eliminarlo, consultarlo, reponer unidades y listar todo el inventario. Si el código no está, responde que no existe.
 
-(Descríbanlo en sus propias palabras: qué guarda el programa, quién lo
-usa y para qué. No copien el enunciado.)
+En este avance usamos una lista enlazada simple con búsqueda por código. En la entrega final la cambiaremos por una tabla hash con encadenamiento, donde cada cubeta será esta lista.
 
 ## 2. Qué guarda la estructura y qué operaciones necesita
 
-| Operación | Qué hace | Precondición |
-|---|---|---|
-|  |  |  |
+Cada nodo guarda el código, el nombre, la cantidad y un puntero al siguiente nodo. La lista solo guarda el puntero `cabeza` al primer nodo.
 
-## 3. La estructura escogida y por qué
+Operaciones: buscar por código, agregar, eliminar, consultar, reponer, listar y liberar la lista.
 
-(Por qué esa y no la otra, en términos del orden en que entran y salen
-los elementos y de lo que cuesta cada operación. Citen el texto guía:
-Thareja capítulo X, o CLRS 4.ª ed. capítulo Y.)
+## 3. Por qué una lista enlazada y qué costo esperamos
 
-Costos esperados, con $n$ el número de elementos:
+Escogimos la lista enlazada porque la cantidad de artículos cambia y no hay que fijar un tamaño de antemano. Además, todas las operaciones buscan por código y nunca por posición, así que no necesitamos el acceso directo del arreglo. Insertamos al frente porque solo cuesta escribir dos punteros, y esta misma lista servirá como cubeta de la tabla hash final.
 
-| Operación | Tiempo | Espacio |
-|---|---|---|
-|  | $O(1)$ | $O(1)$ |
+El costo de cada operación, con n artículos:
 
-El invariante de la estructura, como fórmula:
+- **Consultar y reponer** cuestan O(n), porque hay que recorrer la lista hasta encontrar el código.
+- **Agregar** cuesta O(n), porque primero se busca que el código no esté repetido; insertar al frente en sí es Θ(1).
+- **Eliminar** cuesta O(n), porque hay que llegar al nodo anterior; desenlazar y liberar es Θ(1).
+- **Listar** cuesta Θ(n), porque es un solo recorrido.
+- **Liberar la lista** cuesta Θ(n), porque se libera un nodo a la vez.
 
-$$I:\quad 0 \leq n \leq \text{capacidad}$$
+Fuente: clase 15.
 
-Un diagrama del estado de la estructura, en Mermaid:
+## 4. Qué pensamos medir al final
 
-```mermaid
-flowchart LR
-  n1["dato 7"] --> n2["dato 3"] --> n3["dato 9"] --> nil["NULL"]
-```
+Mediremos el tiempo de `CONSULTAR` contra el número de artículos. Lo haremos con la tabla hash en tres tamaños (uno pequeño, uno cercano al número de artículos y uno primo mayor) y con un cuarto juego de códigos que caen todos en la misma cubeta. Lo compararemos con la lista del avance y con `map`.
 
-## 4. Qué piensan medir
-
-(Qué entrada van a variar, entre qué tamaños, y qué esperan ver.)
-
-## 5. Casos de prueba
-
-| Caso | Entrada | Salida esperada | Salida obtenida |
-|---|---|---|---|
-| funcional 1 |  |  |  |
-| funcional 2 |  |  |  |
-| funcional 3 |  |  |  |
-| límite |  |  |  |
-
-(El caso límite es la estructura vacía, con un solo elemento, llena, o
-con la clave repetida: digan cuál escogieron y por qué.)
+También explicaremos el orden de `LISTAR`. En la lista sale en orden inverso al de inserción. En la tabla hash sale por cubeta, y dentro de cada cubeta en el orden de su lista. Para tener el mismo orden en las dos estructuras hay que listar con un criterio común, por ejemplo ordenando por código.
