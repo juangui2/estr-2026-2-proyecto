@@ -2,7 +2,7 @@
 // Punto de entrada del proyecto. Reemplacen este archivo por el suyo.
 #include <cstdio>
 #include <string>
-#include "Lista.h"
+#include "lista.h"
 
 
 int main() {
