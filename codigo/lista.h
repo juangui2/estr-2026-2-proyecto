@@ -29,6 +29,7 @@ public:
     bool reponerProducto(int codigo, int cantidad);
     void listarProductos() const;
     void liberarLista();
+    int contar() const;
 };
 
 #endif

@@ -122,6 +122,18 @@ void Lista::liberarLista(){
 
 }
 
+int Lista::contar() const{
+    int total = 0;
+    Nodo* actual = cabeza;
+
+    while(actual !=nullptr){
+        total +=1;
+        actual = actual -> sig;
+    }
+
+    return total;
+}
+
 Lista::~Lista(){
     liberarLista();
 }
