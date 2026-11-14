@@ -1,13 +1,14 @@
 # Compilación del proyecto. Ajuste FUENTES con los archivos que escriba.
 CC      = g++
 CFLAGS  = -Wall -Wextra -O2
-FUENTES = principal.cpp lista.cpp Tablahash.cpp
+FUENTES = principal.cpp lista.cpp Tablahash.cpp MapInventario.cpp
 PROGRAMA = proyecto
 
 all: $(PROGRAMA)
 
 $(PROGRAMA): $(FUENTES)
 	$(CC) $(CFLAGS) $(FUENTES) -o $(PROGRAMA)
+
 
 # Corre cada entrada de ../datos/ y compara con su salida esperada
 pruebas: $(PROGRAMA)

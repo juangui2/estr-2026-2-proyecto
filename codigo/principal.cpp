@@ -1,51 +1,105 @@
+
 // Autores: Juan Guillermo Espinosa 9038654, Miguel Angel Lenis 9040913, Juan Jose Arenas 9035047
-// Punto de entrada del proyecto. Reemplacen este archivo por el suyo.
+// Programa principal del inventario.
+
 #include <cstdio>
 #include <string>
-#include "lista.h"
+#include "Tablahash.h"
 
+using namespace std;
 
-int main() {
-    Lista inventario;
+void convertirMayusculas(char texto[]){
+    int i = 0;
 
-    inventario.agregarProducto(112341234, "Arroz", 10);
-    inventario.agregarProducto(212351235, "Frijol", 5);
-    inventario.agregarProducto(52345, "lechona", 100);
+    while (texto[i] != '\0'){
+        if (texto[i] >= 'a' && texto[i] <= 'z'){
+            texto[i] = texto[i] - 32;
+        }
 
-    // Duplicado: debe devolver false
-    if (!inventario.agregarProducto(52345, "otra lechona", 1)) {
-        printf("No se agrego: el codigo 52345 ya existe\n");
+        i++;
+    }
+}
+
+int main(){
+
+    TablaHash inventario;
+    char comando[20];
+    int n;
+
+    scanf("%d", &n);
+
+    for (int i = 0; i < n; i++){
+
+        scanf("%19s", comando);
+        convertirMayusculas(comando);
+
+        if (string(comando) == "SALIR"){
+            i = n;
+        }
+        else if (string(comando) == "AGREGAR"){
+
+            int codigo;
+            int cantidad;
+            char nombre[100];
+
+            scanf("%d %99s %d", &codigo, nombre, &cantidad);
+
+            if (inventario.agregarProducto(codigo, nombre, cantidad)){
+                printf("ok\n");
+            }
+            else{
+                printf("repetido\n");
+            }
+
+        }
+        else if (string(comando) == "ELIMINAR"){
+
+            int codigo;
+            scanf("%d", &codigo);
+
+            if (inventario.eliminarProducto(codigo)){
+                printf("ok\n");
+            }
+            else{
+                printf("no existe\n");
+            }
+
+        }
+        else if (string(comando) == "CONSULTAR"){
+
+            int codigo;
+            string nombre;
+            int cantidad;
+
+            scanf("%d", &codigo);
+
+            if (inventario.consultarProducto(codigo, nombre, cantidad)){
+                printf("%d %s %d\n", codigo, nombre.c_str(), cantidad);
+            }
+            else{
+                printf("no existe\n");
+            }
+
+        }
+        else if (string(comando) == "REPONER"){
+
+            int codigo;
+            int cantidad;
+
+            scanf("%d %d", &codigo, &cantidad);
+
+            if (inventario.reponerProducto(codigo, cantidad)){
+                printf("ok\n");
+            }
+            else{
+                printf("no existe\n");
+            }
+
+        }
+        else if (string(comando) == "LISTAR"){
+            inventario.listarProductos();
+        }
     }
 
-    printf("--- Inventario inicial ---\n");
-    inventario.listarProductos();
-
-    // Consultar (producto que existe)
-    std::string nombre;
-    int cantidad;
-    if (inventario.consultarProducto(212351235, nombre, cantidad)) {
-        printf("Encontrado: %s, cantidad %d\n", nombre.c_str(), cantidad);
-    } else {
-        printf("No existe\n");
-    }
-
-    // Consultar (producto que no existe)
-    if (inventario.consultarProducto(0, nombre, cantidad)) {
-        printf("Encontrado: %s, cantidad %d\n", nombre.c_str(), cantidad);
-    } else {
-        printf("El codigo 0 no existe\n");
-    }
-
-    // Reponer
-    inventario.reponerProducto(112341234, 20);
-
-    // Eliminar
-    inventario.eliminarProducto(52345);
-
-    printf("--- Inventario final ---\n");
-    inventario.listarProductos();
-
-  
-    return 0;   // el destructor de Lista libera los nodos
-
+    return 0;
 }
