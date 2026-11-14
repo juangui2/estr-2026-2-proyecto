@@ -16,7 +16,7 @@ pruebas: $(PROGRAMA)
 	  esperada="$${entrada%.in}.out"; \
 	  if [ -f "$$esperada" ]; then \
 	    ./$(PROGRAMA) < "$$entrada" > /tmp/salida.txt; \
-	    if diff -q /tmp/salida.txt "$$esperada" > /dev/null; then \
+	    if diff -q --strip-trailing-cr /tmp/salida.txt "$$esperada" > /dev/null; then \
 	      echo "  OK   $$(basename $$entrada)"; \
 	    else \
 	      echo "  FALLA $$(basename $$entrada)"; \
