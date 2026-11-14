@@ -1,6 +1,5 @@
-//Este code se usa para medir tiempos y entregar un informa mucho mas completo a nivel de datos
-
 #include <cstdio>
+#include <climits> //Se usa para evitar el desborde
 #include <chrono>
 #include <string>
 #include "lista.h"
@@ -9,11 +8,10 @@
 
 using namespace std::chrono;
 
+// Tiempo actual en milisegundos
 double ahoraMs() {
     return duration<double, milli>(steady_clock::now().time_since_epoch()).count();
 }
-
-//Funciones para saber si es primo o para buscar el siguiente
 
 bool esPrimo(int n) {
     bool primo = n >= 2;
@@ -34,24 +32,30 @@ int siguientePrimo(int n) {
     return n;
 }
 
-int codigoDe(int i) {
-    return i * 7 + 3;
+// Codigo del producto i. Con paso = 7 los codigos se reparten bien;
+// con paso = M todos caen en el mismo bucket (peor caso de la hash).
+int codigoDe(int i, int paso) {
+    return (int)((long long)i * paso + 3);
 }
 
-template <typename Estructura> // Esta es una funcion para que sirva el agregarProducto de cada una 
-                               // de la estructuras, ya que al tener mismo nombre puede generar problemas
-double llenar(Estructura& e, int n) {
+// Evita el desborde de int
+bool cabeEnInt(int n, int paso) {
+    return (long long)(n - 1) * paso + 3 <= INT_MAX;
+}
+
+template <typename Estructura>
+double llenar(Estructura& e, int n, int paso) {
     double t0 = ahoraMs();
 
     for (int i = 0; i < n; i++) {
-        e.agregarProducto(codigoDe(i), "producto", 1);
+        e.agregarProducto(codigoDe(i, paso), "producto", 1);
     }
 
     return ahoraMs() - t0;
 }
 
 template <typename Estructura>
-double consultarTodos(const Estructura& e, int n, int& encontrados) {
+double consultarTodos(const Estructura& e, int n, int paso, int& encontrados) {
     std::string nombre;
     int cantidad;
     encontrados = 0;
@@ -59,7 +63,7 @@ double consultarTodos(const Estructura& e, int n, int& encontrados) {
     double t0 = ahoraMs();
 
     for (int i = 0; i < n; i++) {
-        if (e.consultarProducto(codigoDe(i), nombre, cantidad)) {
+        if (e.consultarProducto(codigoDe(i, paso), nombre, cantidad)) {
             encontrados++;
         }
     }
@@ -68,107 +72,122 @@ double consultarTodos(const Estructura& e, int n, int& encontrados) {
 }
 
 template <typename Estructura>
-double eliminarTodos(Estructura& e, int n) {
+double eliminarTodos(Estructura& e, int n, int paso) {
     double t0 = ahoraMs();
 
     for (int i = 0; i < n; i++) {
-        e.eliminarProducto(codigoDe(i));
+        e.eliminarProducto(codigoDe(i, paso));
     }
 
     return ahoraMs() - t0;
 }
 
-
-// Peor caso de la hash: todos los codigos son multiplos de M,
-// asi que todos caen en el mismo bucket
-void peorCasoHash(int n) {
-    int M = siguientePrimo(n / 2);
-    TablaHash tabla(M);
-    std::string nombre;
-    int cantidad;
+// Repite llenar -> consultar -> eliminar y devuelve el promedio de cada fase.
+// Devuelve false si alguna vez la estructura no encontro los n elementos.
+template <typename Estructura>
+bool medirCiclo(Estructura& e, int n, int paso, int repeticiones,
+                double& a, double& c, double& el) {
+    bool ok = true;
     int encontrados = 0;
+    a = 0;
+    c = 0;
+    el = 0;
 
-    double t0 = ahoraMs();
-    for (int i = 0; i < n; i++) {
-        tabla.agregarProducto(i * M, "producto", 1);
-    }
-    double a = ahoraMs() - t0;
-
-    printf("# HashPeor n=%d M=%d lambda=%.2f max=%d vacios=%d\n",
-           n, M, tabla.factorCarga(), tabla.longitudMaxima(), tabla.bucketsVacios());
-
-    t0 = ahoraMs();
-    for (int i = 0; i < n; i++) {
-        if (tabla.consultarProducto(i * M, nombre, cantidad)) {
-            encontrados++;
+    for (int r = 0; r < repeticiones; r++) {
+        a += llenar(e, n, paso);
+        c += consultarTodos(e, n, paso, encontrados);
+        if (encontrados != n) {
+            ok = false;
         }
+        el += eliminarTodos(e, n, paso);
     }
-    double c = ahoraMs() - t0;
 
-    t0 = ahoraMs();
-    for (int i = 0; i < n; i++) {
-        tabla.eliminarProducto(i * M);
-    }
-    double e = ahoraMs() - t0;
+    a /= repeticiones;
+    c /= repeticiones;
+    el /= repeticiones;
 
-    printf("HashPeor,%d,%.3f,%.3f,%.3f\n", n, a, c, e);
-    if (encontrados != n) printf("# ERROR HashPeor: encontrados=%d\n", encontrados);
+    return ok;
+}
+
+// Llena la tabla una vez y muestra como quedaron los buckets
+void diagnostico(const char* nombre, TablaHash& tabla, int n, int M, int paso) {
+    llenar(tabla, n, paso);
+    printf("# %s n=%d M=%d lambda=%.2f max=%d vacios=%d\n",
+           nombre, n, M, tabla.factorCarga(), tabla.longitudMaxima(), tabla.bucketsVacios());
+    eliminarTodos(tabla, n, paso);
 }
 
 int main() {
-    int tamanos[] = {1000, 5000, 10000, 50000, 100000};
+    int tamanos[] = {1000, 2000, 5000, 10000, 20000};
     int cantidadTamanos = 5;
+    int paso = 7;
+    int repeticiones = 500;     // Hash y Map son muy rapidos: se promedia
+    bool todoOk = true;
 
-    printf("estructura,n,agregar_ms,consultar_ms,eliminar_ms\n");
-    printf("------------------------------------------------------\n");
+    printf("estructura,n,M,agregar_ms,consultar_ms,eliminar_ms\n");
+    printf("--------------------------------------------------\n");
 
     for (int k = 0; k < cantidadTamanos; k++) {
         int n = tamanos[k];
-        int encontrados;
+        double a, c, e;
+        bool ok;
 
-        // ---- Lista ----
+        // ---- Lista (una sola corrida: ya tarda lo suficiente) ----
         {
             Lista lista;
-            double a = llenar(lista, n);
-            double c = consultarTodos(lista, n, encontrados);
-            double e = eliminarTodos(lista, n);
-            printf("Lista,%d,%.3f,%.3f,%.3f\n", n, a, c, e);
-            if (encontrados != n) printf("# ERROR Lista: encontrados=%d\n", encontrados);
+            ok = medirCiclo(lista, n, paso, 1, a, c, e);
+            printf("Lista,%d,-,%.6f,%.6f,%.6f\n", n, a, c, e);
+            printf("--------------------------------------------------\n");
+            if (!ok) { printf("# ERROR Lista: no encontro todos los elementos\n"); todoOk = false; }
         }
 
-        // ---- TablaHash ----
-        {
-            int M = siguientePrimo(n / 2);
+        // ---- TablaHash con tres tamanos de tabla ----
+        int Ms[3] = {101, n, siguientePrimo(2 * n)};
+        const char* nombres[3] = {"Hash_pequena", "Hash_cercana_n", "Hash_primo_mayor"};
+        int reps[3] = {20, repeticiones, repeticiones};   // la pequena es lenta
+
+        for (int j = 0; j < 3; j++) {
+            int M = Ms[j];
             TablaHash tabla(M);
-            double a = llenar(tabla, n);
 
-            // diagnostico con la tabla llena
-            printf("# Hash n=%d M=%d lambda=%.2f max=%d vacios=%d\n",
-                   n, M, tabla.factorCarga(), tabla.longitudMaxima(), tabla.bucketsVacios());
-
-            double c = consultarTodos(tabla, n, encontrados);
-            double e = eliminarTodos(tabla, n);
-            printf("Hash,%d,%.3f,%.3f,%.3f\n", n, a, c, e);
-            if (encontrados != n) printf("# ERROR Hash: encontrados=%d\n", encontrados);
+            diagnostico(nombres[j], tabla, n, M, paso);
+            ok = medirCiclo(tabla, n, paso, reps[j], a, c, e);
+            printf("%s,%d,%d,%.6f,%.6f,%.6f\n", nombres[j], n, M, a, c, e);
+            printf("--------------------------------------------------\n");
+            if (!ok) { printf("# ERROR %s: no encontro todos los elementos\n", nombres[j]); todoOk = false; }
         }
 
         // ---- Map ----
         {
             MapInventario mapa;
-            double a = llenar(mapa, n);
-            double c = consultarTodos(mapa, n, encontrados);
-            double e = eliminarTodos(mapa, n);
-            printf("Map,%d,%.3f,%.3f,%.3f\n", n, a, c, e);
-            if (encontrados != n) printf("# ERROR Map: encontrados=%d\n", encontrados);
+            ok = medirCiclo(mapa, n, paso, repeticiones, a, c, e);
+            printf("Map,%d,-,%.6f,%.6f,%.6f\n", n, a, c, e);
+            if (!ok) { printf("# ERROR Map: no encontro todos los elementos\n"); todoOk = false; }
+            printf("--------------------------------------------------\n");
         }
-        
-        {
 
-         // ---- Hash en el peor caso ----
-        peorCasoHash(n);
-        printf("------------------------------------------------------\n");
+        // ---- Peor caso de la hash: todos los codigos en el mismo bucket ----
+        {
+            int M = n;
+            if (!cabeEnInt(n, M)) {
+                printf("# Hash_peor_caso n=%d omitido: los codigos desbordarian int\n", n);
+            } else {
+                TablaHash tabla(M);
+
+                diagnostico("Hash_peor_caso", tabla, n, M, M);
+                ok = medirCiclo(tabla, n, M, 1, a, c, e);
+                printf("Hash_peor_caso,%d,%d,%.6f,%.6f,%.6f\n", n, M, a, c, e);
+                printf("--------------------------------------------------\n");
+                if (!ok) { printf("# ERROR Hash_peor_caso: no encontro todos los elementos\n"); todoOk = false; }
+            }
         }
     }
 
-    return 0;
+    if (todoOk) {
+        printf("# Verificacion OK: todas las estructuras encontraron todos los elementos\n");
+    } else {
+        printf("# Verificacion FALLO: revisar los ERROR de arriba\n");
+    }
+
+    return todoOk ? 0 : 1;
 }
