@@ -36,3 +36,36 @@ void TablaHash::listarProductos() const {
     }
 }
  
+int TablaHash::cantidad() const {
+    int total = 0;
+    for (int i = 0; i < M; i++) {
+        total += tabla[i].contar();
+    }
+    return total;
+}
+
+int TablaHash::longitudMaxima()const{
+    int maxima = 0;
+    for (int i = 0; i < M; i++) {
+        int largo = tabla[i].contar();
+        if (largo > maxima) {
+            maxima = largo;
+        }
+    }
+    return maxima;
+}
+
+int TablaHash::bucketsVacios()const{
+    int vacios = 0;
+    for (int i = 0; i<M; i++){
+        int primero = tabla[i].contar();
+        if (primero == 0){
+            vacios++;
+        }
+    }
+    return vacios;
+}
+
+double TablaHash::factorCarga() const {
+    return (double)cantidad() / M;
+}

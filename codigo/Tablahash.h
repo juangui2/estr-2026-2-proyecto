@@ -26,6 +26,12 @@ public:
     bool consultarProducto(int codigo, string& nombre, int& cantidad) const;
     bool reponerProducto(int codigo, int cantidad);
     void listarProductos() const;
+
+    //  Metodos para uso de informe
+    int cantidad() const;          
+    int longitudMaxima() const;    
+    int bucketsVacios() const;     
+    double factorCarga() const; 
 };
  
 #endif
