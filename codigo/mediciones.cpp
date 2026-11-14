@@ -4,7 +4,7 @@
 #include <chrono>
 #include <string>
 #include "lista.h"
-#include "TablaHash.h"
+#include "Tablahash.h"
 #include "MapInventario.h"
 
 using namespace std::chrono;
