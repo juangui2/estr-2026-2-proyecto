@@ -228,7 +228,7 @@ En la tabla hash, las operaciones individuales pueden ser $O(1)$ en promedio cua
 
 ## 4. Experimentos
 
-Las mediciones se hicieron en Intel(R) Core(TM) 5 210H ,16 GB RAM en windows, compilando con `g++`y las banderas `-Wall -Wextra -O2`. Las entradas son deterministas: el producto i (de 0 a n − 1) usa el código 7·i + 3, así todos son distintos y las tres estructuras reciben los mismos datos. En cada experimento se insertan los n productos, se consultan los n y se eliminan los n en el mismo orden, y se reporta la suma de los tres tiempos. Cada medición repite ese ciclo hasta acumular al menos [100 o 300] ms y se promedia; las estructuras lentas, como la `Lista` con n grande, hacen una sola pasada. El tiempo se midió con [`std::chrono::steady_clock`].
+Las mediciones se hicieron en Intel(R) Core(TM) 5 210H ,16 GB RAM en windows, compilando con `g++`  y las banderas `-Wall -Wextra -O2`. Las entradas son deterministas: el producto i (de 0 a n − 1) usa el código 7·i + 3, así todos son distintos y las tres estructuras reciben los mismos datos. En cada experimento se insertan los n productos, se consultan los n y se eliminan los n en el mismo orden, y se reporta la suma de los tres tiempos. Para la tabla hash y `std::map` se repitió ese ciclo 500 veces y se reporta el promedio (20 repeticiones para la tabla de 101 cubetas, que es más lenta). La `Lista` y el peor caso de la tabla hash se midieron en una sola corrida, porque ya tardan lo suficiente. El tiempo se midió con `std::chrono::steady_clock`.
 
 | n | desde cero (ms) | biblioteca (ms) | Lista (ms) |
 |---|---|---|---|
