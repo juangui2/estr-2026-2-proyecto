@@ -194,24 +194,24 @@ En la tabla hash, las operaciones individuales pueden ser $O(1)$ en promedio cua
 
 ## 4. Experimentos
 
-Máquina, compilador y banderas con que se midió; cómo se generaron las
-entradas; cuántas repeticiones por tamaño.
+| n | desde cero (ms) | biblioteca (ms) | Lista (ms) |
+|---|---|---|---|
+| 1000* | ≈ 0,12 | ≈ 0,22 | no confiable |
+| 5000 | 0,551 | 1,159 | 101,3 |
+| 10000 | 1,034 | 2,392 | 365,6 |
+| 50000 | 4,826 | 11,839 | 10743 |
+| 100000 | 9,872 | 24,710 | 41689 |
 
-| $n$ | desde cero (ms) | biblioteca (ms) |
-|---|---|---|
-| 1000 |  |  |
-| 5000 |  |  |
-| 10000 |  |  |
-| 50000 |  |  |
-| 100000 |  |  |
+\* Con n = 1.000 cada medición dura menos que la resolución del reloj del sistema (~1 ms), y algunas fases dieron tiempos nulos o negativos. Por eso este tamaño solo se reporta de forma aproximada (mediana de cuatro corridas) y no se usa en el análisis. La `Lista` no se reporta en esta fila.
+
 
 ```mermaid
 xychart-beta
-  title "Tiempo contra tamaño de la entrada"
-  x-axis [1000, 5000, 10000, 50000, 100000]
-  y-axis "milisegundos" 0 --> 100
-  line [1, 5, 12, 60, 130]
-  line [1, 4, 9, 45, 95]
+    title "Tiempo contra tamaño de la entrada"
+    x-axis "n (productos)" [1000, 5000, 10000, 50000, 100000]
+    y-axis "milisegundos" 0 --> 30
+    line [0.12, 0.551, 1.034, 4.826, 9.872]
+    line [0.22, 1.159, 2.392, 11.839, 24.710]
 ```
 
 ## 5. Lo medido contra lo predicho
