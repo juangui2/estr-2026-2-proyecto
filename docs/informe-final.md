@@ -10,6 +10,36 @@
 
 (Qué operaciones expone cada una y por qué la interfaz es la misma.)
 
+Diagramas mermaid de cada una de las 2 estructuras usadas.
+
+
+# Diagramas del informe
+
+## 1. Lista enlazada con nodos y punteros
+
+Se insertó Arroz, luego Frijol y luego lechona. Como agregarProducto inserta al inicio, queda en orden inverso:
+
+```mermaid
+flowchart LR
+    cabeza([cabeza]) --> N1["codigo: 52345<br/>nombre: lechona<br/>cantidad: 100<br/>sig"]
+    N1 --> N2["codigo: 212351235<br/>nombre: Frijol<br/>cantidad: 5<br/>sig"]
+    N2 --> N3["codigo: 112341234<br/>nombre: Arroz<br/>cantidad: 10<br/>sig"]
+    N3 --> NULO([nullptr])
+```
+
+## 2. Tabla hash con varias cubetas (M = 5)
+
+Tabla hash con varias cubetas (M = 5, hash = codigo % M)
+
+```mermaid
+flowchart LR
+    B0["tabla[0]"] --> A10["codigo 10"] --> Z0([nullptr])
+    B1["tabla[1]"] --> Z1([nullptr])
+    B2["tabla[2]"] --> A7["codigo 7"] --> Z2([nullptr])
+    B3["tabla[3]"] --> A3["codigo 3"] --> Z3([nullptr])
+    B4["tabla[4]"] --> A9["codigo 9"] --> Z4([nullptr])
+```
+
 ## 3. Análisis formal de complejidad
 
 Una demostración por operación no trivial, en cuatro partes:
