@@ -4,9 +4,15 @@
 
 ## 1. El escenario y el modelado
 
-(Del avance, corregido.)
+Nuestro programa lleva el inventario de un negocio pequeño, como una tienda de abarrotes o una bodega. De cada producto guarda un código numérico único, el nombre y la cantidad disponible. El código identifica al producto: no puede haber dos con el mismo.
+
+Lo usaría la persona encargada del inventario, que necesita registrar productos nuevos, eliminar los que dejan de venderse, consultar cuántas unidades quedan de uno y reponer existencias cuando llega mercancía. También puede listar todo lo que hay en bodega. Casi todo lo que hace es buscar un producto por su código, así que la rapidez de esa búsqueda es lo que más importa.
+
+El propósito es llevar el control del stock sin errores (sin duplicados) y comparar tres formas de organizar los datos: una lista enlazada, una tabla hash y un map de la librería estándar. Queremos ver cuál responde mejor cuando el inventario crece, de mil a veinte mil productos.
 
 # Diagramas del informe
+
+Diagramas mermaid de cada una de las 2 estructuras usadas.
 
 Lista enlazada con nodos y punteros
 
@@ -45,8 +51,15 @@ flowchart LR
 
 (Qué operaciones expone cada una y por qué la interfaz es la misma.)
 
-Diagramas mermaid de cada una de las 2 estructuras usadas.
+Las tres estructuras (Lista, TablaHash y MapInventario) exponen las mismas cinco operaciones, y todas identifican al producto por su código:
 
+agregarProducto(codigo, nombre, cantidad) devuelve false si el código ya existe.
+eliminarProducto(codigo) devuelve true si lo encontró y lo quitó.
+consultarProducto(codigo, nombre, cantidad) devuelve por referencia el nombre y la cantidad, y responde si existe.
+reponerProducto(codigo, cantidad) suma unidades a un producto existente.
+listarProductos() imprime todo el inventario.
+
+La interfaz es la misma porque las tres implementan un mismo contrato: el de un diccionario que asocia una clave (el código) con sus datos, con insertar, buscar y eliminar como operaciones básicas [1]. Lo que cambia es la representación interna: nodos enlazados, un arreglo de listas con una función hash, o un árbol balanceado dentro de std::map. Separar interfaz e implementación permite cambiar la segunda sin tocar el código que usa la estructura [2][3]. Lo comprobamos en la práctica: para pasar de Lista a TablaHash en principal.cpp solo cambiamos el tipo de la variable, y el mismo código de medición sirve para las tres.
 
 ## 3. Análisis formal de complejidad
 
