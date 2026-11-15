@@ -6,16 +6,9 @@
 
 (Del avance, corregido.)
 
-## 2. Las dos estructuras
-
-(Qué operaciones expone cada una y por qué la interfaz es la misma.)
-
-Diagramas mermaid de cada una de las 2 estructuras usadas.
-
-
 # Diagramas del informe
 
-## 1. Lista enlazada con nodos y punteros
+Lista enlazada con nodos y punteros
 
 Se insertó Arroz, luego Frijol y luego lechona. Como agregarProducto inserta al inicio, queda en orden inverso:
 
@@ -27,7 +20,6 @@ flowchart LR
     N3 --> NULO([nullptr])
 ```
 
-## 2. Tabla hash con varias cubetas (M = 5)
 
 Tabla hash con varias cubetas (M = 5, hash = codigo % M)
 
@@ -39,6 +31,22 @@ flowchart LR
     B3["tabla[3]"] --> A3["codigo 3"] --> Z3([nullptr])
     B4["tabla[4]"] --> A9["codigo 9"] --> Z4([nullptr])
 ```
+
+Colision: dos codigos en la misma cubeta
+ 
+```mermaid
+flowchart LR
+    C1["codigo 7<br/>7 % 5 = 2"] --> B2["tabla[2]"]
+    C2["codigo 12<br/>12 % 5 = 2"] --> B2
+    B2 --> N12["codigo 12<br/>Arroz"] --> N7["codigo 7<br/>Frijol"] --> Z([nullptr])
+```
+
+## 2. Las dos estructuras
+
+(Qué operaciones expone cada una y por qué la interfaz es la misma.)
+
+Diagramas mermaid de cada una de las 2 estructuras usadas.
+
 
 ## 3. Análisis formal de complejidad
 
