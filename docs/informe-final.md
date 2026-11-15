@@ -4,7 +4,21 @@
 
 ## 1. El escenario y el modelado
 
-(Del avance, corregido.)
+El escenario seleccionado corresponde al inventario de una tienda, el programa permite almacenar y administrar productos mediante un código que identifica a cada uno.
+
+Cada producto tiene tres datos: un código entero, un nombre y una cantidad disponible. El código se utiliza como clave para identificar los productos y evitar que se agreguen dos productos con el mismo código.
+
+El sistema permite realizar las siguientes operaciones:
+
+- **AGREGAR:** registra un producto nuevo con su código, nombre y cantidad.
+- **ELIMINAR:** elimina un producto utilizando su código.
+- **CONSULTAR:** busca un producto y muestra su nombre y cantidad.
+- **REPONER:** aumenta la cantidad disponible de un producto.
+- **LISTAR:** muestra todos los productos almacenados.
+
+Para implementar el inventario se utiliza una lista enlazada simple y una tabla hash con encadenamiento, además, se utiliza `map` de C++ como estructura de referencia para comparar los tiempos de ejecución.
+
+En las estructuras implementadas, cada producto se almacena con su código, nombre y cantidad, en la lista enlazada, los productos se conectan mediante punteros entre nodos, en la tabla hash, el código del producto determina la cubeta donde se almacena mediante la operación módulo.
 
 # Diagramas del informe
 
@@ -43,7 +57,25 @@ flowchart LR
 
 ## 2. Las dos estructuras
 
-(Qué operaciones expone cada una y por qué la interfaz es la misma.)
+### Lista enlazada simple
+
+Cada nodo almacena el código, nombre y cantidad de un producto, además de un puntero al siguiente nodo, la lista permite agregar, consultar, eliminar, reponer y listar productos mediante recorridos desde la cabeza.
+
+### Tabla hash con encadenamiento
+
+Utiliza un arreglo de cubetas, donde cada producto se almacena según el resultado de la función hash:
+
+$$h(codigo) = codigo \bmod M$$
+
+Si varios productos llegan a la misma cubeta, se almacenan en una lista enlazada.
+
+### Interfaz de las estructuras
+
+Ambas estructuras permiten realizar las mismas operaciones: agregar, eliminar, consultar, reponer y listar productos.
+
+### Estructura de referencia: map de C++
+
+Se utiliza `map` de C++ como referencia para comparar los tiempos de ejecución. Almacena los productos usando su código como clave y mantiene las claves ordenadas.
 
 Diagramas mermaid de cada una de las 2 estructuras usadas.
 
@@ -208,8 +240,8 @@ la constante oculta, la memoria caché, el crecimiento del vector.)
 
 ## 6. Conclusiones
 
-Para el escenario de inventario de una tienda, consideramos que la tabla hash con encadenamiento es una buena opción, ya que permite buscar los productos a partir de su código sin tener que recorrer toda la lista en condiciones normales. Sin embargo, su rendimiento depende de la distribución de los códigos y de la cantidad de colisiones que se presenten.
+Para el escenario de inventario de una tienda, consideramos que la tabla hash con encadenamiento es una buena opción, ya que permite buscar los productos a partir de su código sin tener que recorrer toda la lista en condiciones normales, sin embargo, su rendimiento depende de la distribución de los códigos y de la cantidad de colisiones que se presenten.
 
-La lista enlazada es sencilla de implementar, pero sus operaciones de búsqueda, eliminación y reposición pueden requerir recorrer todos los productos. Por otro lado, map permite buscar los productos de forma eficiente y mantiene las claves ordenadas, aunque utiliza una estructura proporcionada por la biblioteca de C++.
+La lista enlazada es sencilla de implementar, pero sus operaciones de búsqueda, eliminación y reposición pueden requerir recorrer todos los productos, por otro lado, map permite buscar los productos de forma eficiente y mantiene las claves ordenadas, aunque utiliza una estructura proporcionada por la biblioteca de C++.
 
-En conclusión, para este inventario elegiríamos la tabla hash porque las consultas se realizan mediante el código del producto. Si fuera necesario mantener los productos ordenados por código, map sería una alternativa conveniente. La lista enlazada puede ser útil cuando se busca una implementación más sencilla y no se requiere realizar búsquedas frecuentes.
+En conclusión, para este inventario elegiríamos la tabla hash porque las consultas se realizan mediante el código del producto, si fuera necesario mantener los productos ordenados por código, map sería una alternativa conveniente, La lista enlazada puede ser útil cuando se busca una implementación más sencilla y no se requiere hacer búsquedas frecuentes.
