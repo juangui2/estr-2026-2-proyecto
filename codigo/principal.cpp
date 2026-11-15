@@ -1,4 +1,3 @@
-
 // Autores: Juan Guillermo Espinosa 9038654, Miguel Angel Lenis 9040913, Juan Jose Arenas 9035047
 // Programa principal del inventario.
 
@@ -33,10 +32,7 @@ int main(){
         scanf("%19s", comando);
         convertirMayusculas(comando);
 
-        if (string(comando) == "SALIR"){
-            i = n;
-        }
-        else if (string(comando) == "AGREGAR"){
+        if (string(comando) == "AGREGAR"){
 
             int codigo;
             int cantidad;

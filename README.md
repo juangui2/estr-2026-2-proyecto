@@ -20,12 +20,11 @@ su nota del proyecto es 0.0.
 | Miguel Angel Lenis Perez |9040913  | mangell@javerianacali.edu.co | MiguelAngelLenis |
 | Juan Jose Arenas Davila | 9035047 | arenasjj666@javerianacali.edu.co | Arenazzz666 |
 
-**Escenario escogido:** (A inventario / B frecuencias / C turnos / D índice)
+**Escenario escogido:** A. Inventario de una tienda.
 
-Inventario
-
-- Estructura escrita desde cero:
-- Estructura de la biblioteca contra la que se compara:
+- Estructuras escritas desde cero: lista enlazada simple y tabla hash
+  con encadenamiento.
+- Estructura de referencia: `map` de C++.
 
 ## Lo primero
 
