@@ -1,5 +1,5 @@
 #include <cstdio>
-#include <climits> //Se usa para evitar el desborde
+#include <climits> //Se usa para evitar el desborde en el caso de hash peor Linea 43
 #include <chrono>
 #include <string>
 #include "lista.h"
@@ -118,7 +118,7 @@ void diagnostico(const char* nombre, TablaHash& tabla, int n, int M, int paso) {
 }
 
 int main() {
-    int tamanos[] = {1000, 2000, 5000, 10000, 20000};
+    int tamanos[] = {1000, 5000, 10000, 50000, 100000};
     int cantidadTamanos = 5;
     int paso = 7;
     int repeticiones = 500;     // Hash y Map son muy rapidos: se promedia
