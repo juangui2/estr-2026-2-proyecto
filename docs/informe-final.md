@@ -208,5 +208,8 @@ la constante oculta, la memoria caché, el crecimiento del vector.)
 
 ## 6. Conclusiones
 
-(Cuál estructura conviene para este escenario y bajo qué condiciones
-cambiaría la respuesta.)
+Para el escenario de inventario de una tienda, consideramos que la tabla hash con encadenamiento es una buena opción, ya que permite buscar los productos a partir de su código sin tener que recorrer toda la lista en condiciones normales. Sin embargo, su rendimiento depende de la distribución de los códigos y de la cantidad de colisiones que se presenten.
+
+La lista enlazada es sencilla de implementar, pero sus operaciones de búsqueda, eliminación y reposición pueden requerir recorrer todos los productos. Por otro lado, map permite buscar los productos de forma eficiente y mantiene las claves ordenadas, aunque utiliza una estructura proporcionada por la biblioteca de C++.
+
+En conclusión, para este inventario elegiríamos la tabla hash porque las consultas se realizan mediante el código del producto. Si fuera necesario mantener los productos ordenados por código, map sería una alternativa conveniente. La lista enlazada puede ser útil cuando se busca una implementación más sencilla y no se requiere realizar búsquedas frecuentes.
