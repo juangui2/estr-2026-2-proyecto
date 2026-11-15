@@ -24,13 +24,7 @@ En las estructuras implementadas, cada producto se almacena con su código, nomb
 Lo usaría la persona encargada del inventario, que necesita registrar productos nuevos, eliminar los que dejan de venderse, consultar cuántas unidades quedan de uno y reponer existencias cuando llega mercancía. También puede listar todo lo que hay en bodega. Casi todo lo que hace es buscar un producto por su código, así que la rapidez de esa búsqueda es lo que más importa.
 
 El propósito es llevar el control del stock sin errores (sin duplicados) y comparar tres formas de organizar los datos: una lista enlazada, una tabla hash y un map de la librería estándar. Queremos ver cuál responde mejor cuando el inventario crece, de mil a veinte mil productos.
-=======
-Nuestro programa lleva el inventario de un negocio pequeño, como una tienda de abarrotes o una bodega. De cada producto guarda un código numérico único, el nombre y la cantidad disponible. El código identifica al producto: no puede haber dos con el mismo.
 
-Lo usaría la persona encargada del inventario, que necesita registrar productos nuevos, eliminar los que dejan de venderse, consultar cuántas unidades quedan de uno y reponer existencias cuando llega mercancía. También puede listar todo lo que hay en bodega. Casi todo lo que hace es buscar un producto por su código, así que la rapidez de esa búsqueda es lo que más importa.
-
-El propósito es llevar el control del stock sin errores (sin duplicados) y comparar tres formas de organizar los datos: una lista enlazada, una tabla hash y un map de la librería estándar. Queremos ver cuál responde mejor cuando el inventario crece, de mil a veinte mil productos.
->>>>>>> e665670e68b3e4846f6d2c97d56e780af7b27ecc
 
 # Diagramas del informe
 
