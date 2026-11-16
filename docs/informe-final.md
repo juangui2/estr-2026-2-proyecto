@@ -230,7 +230,7 @@ En la tabla hash, las operaciones individuales pueden ser $O(1)$ en promedio cua
 
 Las mediciones se hicieron en Intel(R) Core(TM) 5 210H ,16 GB RAM en windows, compilando con `g++`  y las banderas `-Wall -Wextra -O2`. Las entradas son deterministas: el producto i (de 0 a n − 1) usa el código 7·i + 3, así todos son distintos y las tres estructuras reciben los mismos datos. En cada experimento se insertan los n productos, se consultan los n y se eliminan los n en el mismo orden, y se reporta la suma de los tres tiempos. Para la tabla hash y `std::map` se repitió ese ciclo 500 veces y se reporta el promedio (20 repeticiones para la tabla de 101 cubetas, que es más lenta). La `Lista` y el peor caso de la tabla hash se midieron en una sola corrida, porque ya tardan lo suficiente. El tiempo se midió con `std::chrono::steady_clock`.
 
-| n | desde cero (ms) | biblioteca (ms) | Lista (ms) |
+| n | desde cero: Hash, M = n (ms)| biblioteca (ms) | Lista (ms) |
 |---|---|---|---|
 | 1000* | ≈ 0,12 | ≈ 0,22 | no confiable |
 | 5000 | 0,551 | 1,159 | 101,3 |
@@ -250,6 +250,11 @@ xychart-beta
     line [0.12, 0.551, 1.034, 4.826, 9.872]
     line [0.22, 1.159, 2.392, 11.839, 24.710]
 ```
+
+*Figura 1. Tiempo total (agregar + consultar + eliminar) contra n.*
+
+- **Línea azul (la de abajo):** tabla hash propia, `TablaHash` con M = n ("desde cero").
+- **Línea verde (la de arriba):** `std::map` ("biblioteca").
 
 ## 5. Lo medido contra lo predicho
 
