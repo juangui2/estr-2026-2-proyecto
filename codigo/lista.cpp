@@ -1,5 +1,6 @@
 // Autores: Juan Guillermo Espinosa 9038654, Miguel Angel Lenis 9040913, Juan Jose Arenas 9035047
 
+#include <cstdio>
 #include <iostream>
 #include "lista.h"
 
