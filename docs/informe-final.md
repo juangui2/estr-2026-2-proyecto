@@ -2,6 +2,16 @@
 
 *(Parte del informe del avance, corregido con la realimentación.)*
 
+Breve introducción de porque se usa primeramente una lista enlazada y despues se modela una tabla hash.
+
+En un inventario casi todo lo que se hace es buscar un producto por su código: consultarlo, reponerlo, eliminarlo o verificar que no esté repetido antes de agregarlo. Por eso la estructura se escoge según qué tan bien permite acceder a un elemento cualquiera, no solo a uno de los extremos.
+
+La lista enlazada es la estructura lineal más sencilla que cumple con eso. Permite insertar y eliminar sin mover otros elementos, crece según se necesite sin reservar espacio de más, y se puede recorrer completa para listar. Su costo es que buscar un código exige recorrerla nodo por nodo, así que cada operación cuesta $O(n)$. Sirve como punto de partida y como solución correcta pero lenta.
+
+La tabla hash con encadenamiento aprovecha que la clave es un número entero. La función $h(c) = c \bmod M$ lleva directamente a una cubeta, y solo se recorre la pequeña lista de esa cubeta. Si los códigos se reparten bien, buscar cuesta $O(1)$ en promedio en lugar de $O(n)$. Además, cada cubeta es la lista del avance, así que la hash reutiliza lo ya construido y se compara con ella de manera justa.
+
+Una pila o una cola no sirven porque restringen el acceso unicamente a los extremos:
+
 ## 1. El escenario y el modelado
 
 <<<<<<< HEAD
@@ -225,6 +235,14 @@ La estructura `map` de C++ mantiene sus claves ordenadas. Sus operaciones de bú
 | Listar | $O(n)$ | $O(M+n)$ | $O(n)$ |
 
 En la tabla hash, las operaciones individuales pueden ser $O(1)$ en promedio cuando los productos se distribuyen entre las cubetas; sin embargo, si todos los productos caen en una misma cubeta, el costo llega a $O(n)$.
+
+R. Thareja. Data Structures Using C. Oxford University Press,
+2018. Cap´ıtulo 6, listas enlazadas.
+
+R. Thareja. Data Structures Using C. Oxford University Press, 2018.
+Cap´ıtulo 15, Hashing and Collision: §15.2 tablas hash; §15.4.1 m´etodo de
+la divisi´on; §15.5.2 resoluci´on de colisiones por encadenamiento
+
 
 ## 4. Experimentos
 
